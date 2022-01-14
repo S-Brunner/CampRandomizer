@@ -5,6 +5,7 @@ export const CamperContext = createContext(null);
 export const CamperProvider = ({ children }) => {
 
     const [ campers, setCampers ] = useState(false);
+    const [ teams, setTeams ] = useState([]); 
 
     useEffect(() => {
         fetch('/campers')
@@ -16,7 +17,9 @@ export const CamperProvider = ({ children }) => {
         <CamperContext.Provider
             value={{
                 campers,
-                setCampers
+                setCampers,
+                teams,
+                setTeams
             }}
         >
             { children }

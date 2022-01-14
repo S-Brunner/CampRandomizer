@@ -15,10 +15,11 @@ const HomePage = () => {
     return (
         <Container>
             <h1>Choose An Option</h1>
-            <div>
+            <OptionContainer>
                 <Option onClick={handleClick} value="teams">Teams</Option>
                 <Option onClick={handleClick} value="cabins">Cabins</Option>
-            </div>
+                <Option onClick={handleClick} value="view-teams">View Teams</Option>
+            </OptionContainer>
         </Container>
     )
 };
@@ -32,7 +33,14 @@ const Container = styled.div`
 `;
 
 const Option = styled.button`
+    max-width: 100px;
+    height: 35px;
+`;
 
+const OptionContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
 `;
 
 export default HomePage;

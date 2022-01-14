@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from  "react-router-dom"
 import HomePage from "./components/homePage";
 import Teams from "./components/TeamRandomizer/teams";
 import Cabins from "./components/cabins";
+import ViewTeams from "./components/viewTeams";
 
 const App = () => {
   return (
@@ -20,6 +21,13 @@ const App = () => {
         <Route exact path="/cabins">
           <Cabins />
         </Route>
+
+        <Route exact path="/view-teams">
+          <ViewTeams />
+        </Route>
+
+        
+
       </Switch>
     </BrowserRouter>
   );
