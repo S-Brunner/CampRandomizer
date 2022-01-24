@@ -64,8 +64,8 @@ const Teams = () => {
                     <Button type="submit" >Randomize</Button>
                 </RandomizerForm>
                 <SaveContainer onSubmit={handleSaveTeams} className={!isSubmited && "Hidden"}>
+                    <Input onChange={handleInput} placeholder="Enter Loadout Name"></Input>
                     <Button type="submit" className="SaveButton">Save Team</Button>
-                    <input onChange={handleInput} placeholder="Enter Loadout Name"></input>
                 </SaveContainer>
                 <>
                     {response && 
@@ -105,6 +105,15 @@ const RandomizerForm = styled.form`
     justify-content: space-around;
     height: 30%;
     width: 30%;
+
+    @media ( max-width: 1100px) {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    @media ( max-width: 400px) {
+        width: 50%;
+    }
 `;
 
 const Dropdown = styled.select`
@@ -113,12 +122,36 @@ const Dropdown = styled.select`
     margin-bottom: -20px;
     text-align: center;
     align-self: center;
+
+    @media ( max-width: 1100px) {
+        margin-bottom: 0;
+    }
+
+    @media ( max-width: 500px ){
+        width: 40%;
+    }
 `;
 
 const Button = styled.button`
     width: 25%;
     height: 35px;
     align-self: center;
+
+    @media ( max-width: 1100px) {
+        width: 40%;
+    }
+
+    @media ( max-width: 640px ) {
+        width: 50%;
+    }
+
+    @media ( max-width: 500px ){
+        width: 75%;
+    }
+
+    @media ( max-width: 300px ){
+        width: 90%;
+    }
 
     &.SaveButton{
         width: 30%;
@@ -128,11 +161,29 @@ const Button = styled.button`
 const SaveContainer = styled.form`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 20%;
-    align-self: center;
     
     &.Hidden{
         display: none;
+    }
+
+    @media ( min-width: 1100px ){
+        flex-direction: column;
+    }
+
+    @media ( min-width: 375px ){
+        width: 50%;
+    }
+`;
+
+const Input = styled.input`
+    justify-self: center;
+    height: 20px;
+
+    @media ( min-width: 1100px ){
+        margin-bottom: 20px;
+        width: 50%;
     }
 `;
 

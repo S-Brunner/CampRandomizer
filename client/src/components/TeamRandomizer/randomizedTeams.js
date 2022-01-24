@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { CamperContext } from "../../campersContext" 
@@ -6,8 +6,6 @@ import { CamperContext } from "../../campersContext"
 const RandomizedTeams = (props) => {
 
     const { campers, teams } = useContext(CamperContext)
-    const [ newTeams, setNewTeams ] = useState(false);
-    const [ newList, setNewList ] = useState([]);
 
     let camperList = []
 
@@ -73,23 +71,23 @@ const RandomizedTeams = (props) => {
     if( props.isSubmited ) {
         for( let numberOfTeams = 1 ; numberOfTeams <= props.amountOfTeams; numberOfTeams ++  ){
 
-            // let teamList = []
+            let teamList = []
     
-            // for ( let numberOfSpots = numberPerTeam ; numberOfSpots !== 0 ; numberOfSpots -- ){
-            //     let index = Math.round(Math.random() * camperList.length)
+            for ( let numberOfSpots = numberPerTeam ; numberOfSpots !== 0 ; numberOfSpots -- ){
+                let index = Math.round(Math.random() * camperList.length)
     
-            //     let camperName = camperList.splice(index, 1);
+                let camperName = camperList.splice(index, 1);
     
-            //     if(camperName.length === 0){
-            //         numberOfSpots ++
-            //     } else {
-            //         teamList.push(camperName[0]);
-            //     }
-            // }
+                if(camperName.length === 0){
+                    numberOfSpots ++
+                } else {
+                    teamList.push(camperName[0]);
+                }
+            }
 
             let team = {
                 teamNumber : numberOfTeams,
-                teamList: [],
+                teamList,
                 teamSize: numberPerTeam,
             }
             if(teams.length < props.amountOfTeams){
@@ -99,22 +97,22 @@ const RandomizedTeams = (props) => {
 
         if(teams.length === props.amountOfTeams) {
 
-            for( let index = 0; index < teams.length; index++){
-                for( let count = teams[index].numberPerTeam; count < teams[index].teamSize ; count ++){
-                    let index = Math.round(Math.random() * camperList.length)
-                    let camperName = camperList.splice(index, 1);
+            // for( let index = 0; index < teams.length; index++){
+            //     for( let count = teams[index].numberPerTeam; count < teams[index].teamSize ; count ++){
+            //         let index = Math.round(Math.random() * camperList.length)
+            //         let camperName = camperList.splice(index, 1);
                     
-                    if( teams[index].teamList.length > teams[index].numberPerTeam ){
-                        console.log("heloo");
-                        break
-                    } else {
-                        teams[index].teamList.push(camperName[0]);
-                    }
-                }
-            }
+            //         if( teams[index].teamList.length > teams[index].numberPerTeam ){
+            //             console.log("heloo");
+            //             break
+            //         } else {
+            //             teams[index].teamList.push(camperName[0]);
+            //         }
+            //     }
+            // }
             
-            console.log(camperList);
-            console.log(teams);
+            // console.log(camperList);
+            // console.log(teams);
 
             for ( let count = 0; count < props.amountOfTeams; count++) {
                 let total = 0;
@@ -123,8 +121,6 @@ const RandomizedTeams = (props) => {
                 })
                 if( total !== CAMPERS){
                     teams[count].teamSize ++;
-                } else {
-                    break;
                 }
             }
         }
@@ -144,7 +140,21 @@ const RandomizedTeams = (props) => {
             // if( totalSpacesUsed <= CAMPERS){
             //     addSpace();
             // }
-        
+        // for( let teamIndex = 0; teamIndex < 2; teamIndex ++){
+        //     for( let teamCount = 0; teamCount < teams[teamIndex].teamSize; teamCount++){
+        //         const randomNumber = Math.floor(Math.random() * camperList.length);
+        //         let randomCamper = camperList.splice(randomNumber, 1);
+
+        //         teams[teamIndex].teamList.push(randomCamper[0])
+        //     }
+        // }
+    }
+    console.log(teams);
+    for( let index = 0; index < teams.length ; index ++){
+        if(teams[index].teamList.length !== teams[index].teamSize){
+            let leftoverCamper = camperList.splice(0, 1);
+            teams[index].teamList.push(leftoverCamper[0])
+        }
     }
     //     let indexOfLastTeam = props.amountOfTeams - 1;
     //     if(teams.length === props.amountOfTeams){
@@ -205,6 +215,11 @@ const TeamList = styled.div`
     width: 80%;
     display: flex;
     justify-content: space-between;
+
+    @media ( max-width: 700px ) {
+        width: 50%;
+        flex-direction: column;
+    }
 `;
 
 const TeamContainer = styled.div`

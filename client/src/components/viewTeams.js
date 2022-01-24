@@ -1,17 +1,29 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
+import Backdrop from "@mui/material/Backdrop";
+import { CircularProgress } from "@mui/material";
+import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import Slide from "@mui/material/Slide";
 
 const ViewTeams = () => {
 
     const [ allTeams, setAllTeams ] = useState(false);
     const [ selection, setSelection ] = useState("");
+    const [ openBackDrop, setOpenBackDrop ] = useState(false);
+    const [ response, setResponse ] = useState(false);
+    const [ open, setOpen ] = useState(false);
 
     useEffect(() => {
         fetch("/teams")
         .then((res) => res.json())
         .then((data) => setAllTeams(data.data));
-    },[])
+        setOpenBackDrop(false)
+    },[response])
 
     const handleSelection = (e) => {
         e.preventDefault();
@@ -19,23 +31,49 @@ const ViewTeams = () => {
     }
 
     const handleDelete = () => {
-        
+        setOpenBackDrop(true)
+        fetch(`/teams/delete/${selection}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type' : 'application/json'
+            }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            setResponse(data);
+            setOpen(true);
+        })
+        setSelection("")
     }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    function TransitionDown(props) {
+        return <Slide {...props} direction="down" />;
+      }
 
     return (
         <>
             {
-                allTeams &&
+                allTeams ? 
                 <>
                     <Container>
                         <H2 to="/">Go Back  </H2>
                         <h3>All Teams Created</h3>
                         <Wrapper>
-                            {allTeams.map((team) => {
-                                return(
-                                    <Team value={team._id} onClick={handleSelection}>{team._id}</Team>
-                                )
-                            })}-
+                            { allTeams.length !== 0 ?
+                                <>
+                                    {allTeams.map((team) => {
+                                        return(
+                                            <Team value={team._id} onClick={handleSelection}>{team._id}</Team>
+                                        )
+                                    })}
+                                </>
+                                :
+                                <div>No teams</div>
+                            }
                         </Wrapper>
                         
                     </Container>
@@ -58,8 +96,49 @@ const ViewTeams = () => {
                                 </TeamContainer>
                             )
                         })}
-                        <DeleteButton onClick={handleDelete}>Delete Team</DeleteButton>
+                        { selection && 
+                                <DeleteButton onClick={handleDelete}>Delete Team</DeleteButton>
+                        }
                     </TeamList>
+                
+                        <Backdrop
+                            sx={{ color: 'blue', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                            open={openBackDrop}
+                        >
+                            <CircularProgress color="inherit" />
+                        </Backdrop>
+                        { response && 
+                            <div>
+                                <Stack spacing={2} sx={{ width: '100%' }}>
+                                    <Snackbar 
+                                        open={open}
+                                        onClose={handleClose}
+                                        autoHideDuration={5000}
+                                        anchorOrigin={{horizontal : 'center', vertical: 'top'}}
+                                        TransitionComponent={TransitionDown}
+                                    >
+                                        {response.status === 200 ? 
+                                            <Alert severity="success" sx={{ width: '100%', background: 'green', color: 'white'}}>
+                                                Team Deleted Successfully!
+                                            </Alert>
+                                            :
+                                            <Alert severity="error" sx={{ width: '100%', background: 'orange', color: 'white' }}>
+                                                Team Not Deleted!
+                                            </Alert>
+                                        }
+                                    </Snackbar>
+                                </Stack>
+                            </div>
+                        }
+                </>
+                :
+                <>
+                <ProgressContainer>
+                    <Box sx={{width: '50%'}}>
+                        <Loading>Loading...</Loading>
+                        <LinearProgress />
+                    </Box>
+                </ProgressContainer>
                 </>
             }
         </>
@@ -122,6 +201,21 @@ const InnerWrapper = styled.div`
 
 const Name = styled.div`
     padding: 2px;
+`;
+
+const ProgressContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+`;
+
+const Loading = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
 `;
 
 export default ViewTeams;

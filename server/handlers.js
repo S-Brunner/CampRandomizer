@@ -78,4 +78,28 @@ const getAllTeams = async (req, res) => {
     }
 }
 
-module.exports = { getCampers, saveTeam, getAllTeams }
+const deleteTeam = async (req, res) => {
+    const client = new MongoClient(MONGO_URI, options);
+
+    try {
+        await client.connect()
+
+        const db = client.db("randomizer");
+        
+        const _id = req.params
+
+        const result = await db.collection("teams").deleteOne(_id);
+
+        if(result.deletedCount === 0){
+            return res.status(400).json({ status: 400, message: "Something went wrong deleting team"})
+        }
+        
+        res.status(200).json({ status: 200, message: 'Delted team successfully' });
+
+        client.close();
+    } catch (error) {
+        res.status(400).json({ status: 400, message: error})
+    }
+}
+
+module.exports = { getCampers, saveTeam, getAllTeams, deleteTeam }
