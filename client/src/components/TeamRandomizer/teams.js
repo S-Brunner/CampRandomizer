@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import styled from "styled-components";
+import React, { useContext, useEffect, useState } from "react";
+import styled, { keyframes } from "styled-components";
 import { CamperContext } from "../../campersContext";
 import { NavLink } from "react-router-dom";
 
@@ -25,23 +25,25 @@ const Teams = () => {
         e.preventDefault();
         setIsSubmited(true)
     }
-
     const handleSaveTeams = (e) => {
-        e.preventDefault();
-        fetch("/teams/save", {
-            method: "POST",
-            body: JSON.stringify({
-                _id: teamName,
-                teamInfo: teams
-            }),
-            headers: {
-                "Content-Type" : "application/json",
-            }
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            setResponse(data);
-        })
+        e.preventDefault()
+        let teamNameTrimmed = teamName.trim();
+
+            fetch("/teams/save", {
+                method: "POST",
+                body: JSON.stringify({
+                    _id: teamNameTrimmed,
+                    teamInfo: teams
+                }),
+                headers: {
+                    "Content-Type" : "application/json",
+                }
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                setResponse(data);
+            })
+        
     }
 
     const handleInput = (e) => {

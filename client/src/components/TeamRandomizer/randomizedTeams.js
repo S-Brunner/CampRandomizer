@@ -149,7 +149,7 @@ const RandomizedTeams = (props) => {
         //     }
         // }
     }
-    console.log(teams);
+
     for( let index = 0; index < teams.length ; index ++){
         if(teams[index].teamList.length !== teams[index].teamSize){
             let leftoverCamper = camperList.splice(0, 1);

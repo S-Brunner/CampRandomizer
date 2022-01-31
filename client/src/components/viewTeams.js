@@ -52,10 +52,10 @@ const ViewTeams = () => {
 
     function TransitionDown(props) {
         return <Slide {...props} direction="down" />;
-      }
+    }
 
     return (
-        <>
+        <> 
             {
                 allTeams ? 
                 <>
