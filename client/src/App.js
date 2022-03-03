@@ -3,8 +3,10 @@ import { BrowserRouter, Route, Switch } from  "react-router-dom"
 
 import HomePage from "./components/homePage";
 import Teams from "./components/TeamRandomizer/teams";
-import Cabins from "./components/cabins";
+import Cabins from "./components/Cabins/cabins";
 import ViewTeams from "./components/viewTeams";
+import Girls from "./components/Cabins/girls";
+import Boys from "./components/Cabins/boys";
 
 const App = () => {
   return (
@@ -26,8 +28,14 @@ const App = () => {
           <ViewTeams />
         </Route>
 
-        
+        <Route exact path="/create/cabins/girls">
+          <Girls />
+        </Route>
 
+        <Route exact path="/create/cabins/boys">
+          <Boys />
+        </Route>
+        
       </Switch>
     </BrowserRouter>
   );
