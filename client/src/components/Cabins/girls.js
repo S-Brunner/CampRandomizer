@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
+import ViewCabins from "./viewCabins";
+
 const Girls = () => {
 
     const [ rooms, setRooms ] = useState([])
-    
+    const [ submitted, setSubmitted ] = useState(false)
+    const gender = "Girls";
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(e.target.id);
+        setSubmitted(true);
     }
 
     const handleChange = (e) => {
@@ -27,49 +31,55 @@ const Girls = () => {
                 }
             })
         }
-        console.log(rooms);
     }
     
     return(
-        <Container>
-            <GoBack to="/cabins">Go Back</GoBack>
-            <p>Girl Cabins Available</p>
-            <Form onSubmit={handleSubmit}>
-                <label for="G1">G1
-                    <input id="G1" type="checkbox" value="G1 12" onChange={handleChange}></input>
-                </label>
-                
-                <label for="G2">G2
-                    <input id="G2" type="checkbox" value="G2 8" onChange={handleChange}></input>                    
-                </label>
-            
-                <label for="G3">G3
-                    <input id="G3" type="checkbox" value="G3 8" onChange={handleChange}></input>                    
-                </label>
-            
-                <label for="G4">G4
-                    <input id="G4" type="checkbox" value="G4 14" onChange={handleChange}></input>                    
-                </label>
-            
-                <label for="G5">G5
-                    <input id="G5" type="checkbox" value="G5 6" onChange={handleChange}></input>                    
-                </label>
+        <>
+            {submitted ?
+                <ViewCabins rooms={rooms} gender={gender}/>
+
+                :
+                <Container>
+                    <GoBack to="/cabins">Go Back</GoBack>
+                    <p>Girl Cabins Available</p>
+                    <Form onSubmit={handleSubmit}>
+                        <label for="G1">G1
+                            <input id="G1" type="checkbox" value="G1 12" onChange={handleChange}></input>
+                        </label>
+                        
+                        <label for="G2">G2
+                            <input id="G2" type="checkbox" value="G2 8" onChange={handleChange}></input>                    
+                        </label>
                     
-                <label for="G6">G6
-                    <input id="G6" type="checkbox" value="G6 4" onChange={handleChange}></input>
-                </label>
-            
-                <label for="G7">G7
-                    <input id="G7" type="checkbox" value="G7 4" onChange={handleChange}></input>                    
-                </label>
-                
-                <label for="G8">G8
-                    <input id="G8" type="checkbox" value="G8 6" onChange={handleChange}></input>
-                </label>
-                
-                <button type="submit">Next</button>
-            </Form>
-        </Container>
+                        <label for="G3">G3
+                            <input id="G3" type="checkbox" value="G3 8" onChange={handleChange}></input>                    
+                        </label>
+                    
+                        <label for="G4">G4
+                            <input id="G4" type="checkbox" value="G4 14" onChange={handleChange}></input>                    
+                        </label>
+                    
+                        <label for="G5">G5
+                            <input id="G5" type="checkbox" value="G5 6" onChange={handleChange}></input>                    
+                        </label>
+                            
+                        <label for="G6">G6
+                            <input id="G6" type="checkbox" value="G6 4" onChange={handleChange}></input>
+                        </label>
+                    
+                        <label for="G7">G7
+                            <input id="G7" type="checkbox" value="G7 4" onChange={handleChange}></input>                    
+                        </label>
+                        
+                        <label for="G8">G8
+                            <input id="G8" type="checkbox" value="G8 6" onChange={handleChange}></input>
+                        </label>
+                        
+                        <button type="submit">Next</button>
+                    </Form>
+                </Container>
+            }
+        </>
     )
 }
 
