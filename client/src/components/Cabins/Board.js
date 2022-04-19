@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { CamperProvider } from "../../campersContext";
 
 const Board = (props) => {
+
+    const roomsList = [];
+
+    for( let count = 0; count < props.ageRanges.length; count ++ ){
+        roomsList.push(props.ageRanges[count]);
+    }   
 
     const drop = (e) => {
         e.preventDefault();
@@ -13,9 +20,7 @@ const Board = (props) => {
         const board = document.getElementById(e.target.id);
 
         card.style.display = 'block';
-
-        console.log(board.getElementsByTagName('div').length);
-
+        
         e.target.appendChild(card);
     }
 
@@ -40,6 +45,7 @@ const Container = styled.div`
     margin-left: 25px;
     width: 500px;
     min-height: 100px;
+    padding-bottom: 35px;
 `;
 
 export default Board;

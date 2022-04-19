@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { CamperContext } from "../../campersContext";
 import Board from "./Board";
 import Card from "./Card";
-import { v4 as uuidv4 } from "uuid";
 
 const ViewCabins = ( props ) => {
 
@@ -105,6 +104,34 @@ const ViewCabins = ( props ) => {
         console.log("waiting cabin list");
     }
 
+    const handleSave = (e) => {
+
+        for( let count = 0; count < amountOfRooms; count ++ ){
+
+            const board = document.getElementById(`${count}`)
+            const camperOrder = board.getElementsByTagName('div')
+
+            let savedList = [];
+
+            for( let count = 0; count < camperOrder.length; count++){
+                const camper = camperOrder[count].innerHTML
+
+                const comma = camper.indexOf( "," )
+                const space = camper.indexOf( "Age: " )
+                
+                const name = camper.slice( 5, comma )
+                const age = camper.slice( space + 5 )
+                const cabinNumber = 
+
+                
+
+                console.log(age);
+            }
+
+            const cabin = { cabin: props.rooms[count].roomNumber, savedList : [] }
+        }
+    }
+
     return(
         <Container>
             <h1>{props.gender}</h1>
@@ -113,10 +140,10 @@ const ViewCabins = ( props ) => {
                         return (
                             <InnerContainer>
                                 <CabinNumber>Cabin {props.rooms[index].roomNumber}</CabinNumber>
-                                <Board id={index}>
+                                <Board className="board" id={index} ageRanges={ageRanges} roomNumber={props.rooms[index].roomNumber}>
                                     {room.list.map((kid, index) => {
                                         return(
-                                            <Card id={kid.name}>
+                                            <Card id={kid.name} index={index}>
                                                 Name: {kid.name}, Age: {kid.age} 
                                             </Card>
                                         )
@@ -126,6 +153,7 @@ const ViewCabins = ( props ) => {
                             </InnerContainer>
                         )
                     })}
+                    <button onClick={handleSave}>Save</button>
                 </RoomOuterContainer>
         </Container>
     )
@@ -159,7 +187,5 @@ const CabinBeds = styled.div`
     display: flex;
     justify-content: center;
 `;
-
-
 
 export default ViewCabins;

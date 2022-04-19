@@ -5,7 +5,7 @@ const Card = (props) => {
 
     const dragStart = (e) => {
         const target = e.target;
-
+        
         e.dataTransfer.setData('card_id', target.id);
 
         setTimeout(() => {
@@ -32,8 +32,10 @@ const Card = (props) => {
 const Container = styled.div`
     margin-top: 10px;
     margin-bottom: 10px;
-    padding: 5px 5px 10px 5px;
+    background: lightgrey;
+    padding: 10px 5px 10px 5px;
     border-bottom: 2px solid black;
+    border-top: 2px solid black;
 
     &:hover{
         cursor: pointer;
