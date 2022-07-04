@@ -7,6 +7,9 @@ import Cabins from "./components/Cabins/cabins";
 import ViewTeams from "./components/viewTeams";
 import Girls from "./components/Cabins/girls";
 import Boys from "./components/Cabins/boys";
+import ViewBoyCabins from "./components/Cabins/ViewBoyCabins";
+import ViewGirlCabins from "./components/Cabins/ViewGirlCabins";
+import ViewCabins from "./components/Cabins/viewCabins";
 
 const App = () => {
   return (
@@ -34,6 +37,14 @@ const App = () => {
 
         <Route exact path="/create/cabins/boys">
           <Boys />
+        </Route>
+
+        <Route exact path="/view/cabins/boys">
+          <ViewBoyCabins />
+        </Route>
+
+        <Route exact path="/view/cabins/girls">
+          <ViewGirlCabins />
         </Route>
         
       </Switch>

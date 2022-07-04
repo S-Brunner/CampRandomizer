@@ -1,48 +1,62 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-
-import ViewCabins from "./viewCabins";
+import { CabinContext } from "../../cabinContext";
+import ViewGirlCabins from "./ViewGirlCabins";
 
 const Girls = () => {
 
-    const [ rooms, setRooms ] = useState([])
-    const [ submitted, setSubmitted ] = useState(false)
-    const gender = "Girls";
+    const roomsSelected = [];
+    const [ final, setFinal ] = useState(false);
+    const [ submit,  setSubmit ] = useState(false);
+    const [ names, setNames ] = useState(false);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setSubmitted(true);
-    }
+    useEffect(() => {
+        fetch('/campers')
+        .then((res) => res.json())
+        .then((data) => {
+            setNames(data.data[0])
+        })
+    },[])
 
     const handleChange = (e) => {
+
         const roomSelected = e.target.value
         const roomNumber = roomSelected.slice(0,2);
         const numBeds = roomSelected.slice(3, 5);
-
         const selected = { roomNumber, numBeds }
-        console.log(roomSelected);
+
+        console.log(selected);
+
         if(e.target.checked){
-            rooms.push(selected)
+            roomsSelected.push(selected)
         } else {
-            rooms.forEach((room, index) => {
+            roomsSelected.forEach((room, index) => {
                 if( room.roomNumber === roomNumber){
-                    rooms.splice(index)
+                    room.splice(index)
                 }
             })
         }
-    }
-    
-    return(
-        <>
-            {submitted ?
-                <ViewCabins rooms={rooms} gender={gender}/>
 
+        console.log(roomsSelected);
+    }
+
+    const handleClick = (e) => {
+        // setGirlRooms(props);
+        e.preventDefault();
+        setFinal(roomsSelected)
+        setSubmit(true)
+    }
+
+    return(
+        <Container>
+            {
+                submit ? <ViewGirlCabins rooms={final} submitted={submit} names={names} />
                 :
-                <Container>
+                <>
                     <GoBack to="/cabins">Go Back</GoBack>
                     <p>Girl Cabins Available</p>
-                    <Form onSubmit={handleSubmit}>
+                    <Form>
                         <label for="G1">G1
                             <input id="G1" type="checkbox" value="G1 12" onChange={handleChange}></input>
                         </label>
@@ -75,11 +89,11 @@ const Girls = () => {
                             <input id="G8" type="checkbox" value="G8 6" onChange={handleChange}></input>
                         </label>
                         
-                        <button type="submit">Next</button>
+                        <button onClick={handleClick}> Next </button>
                     </Form>
-                </Container>
+                </>
             }
-        </>
+        </Container>
     )
 }
 
